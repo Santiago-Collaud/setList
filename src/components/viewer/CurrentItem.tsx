@@ -1,4 +1,4 @@
-import { SetListItem } from "../../types/setlist";
+import { SetListItem } from "../../app/types/setlist";
 
 interface CurrentItemProps {
   item: SetListItem | null;

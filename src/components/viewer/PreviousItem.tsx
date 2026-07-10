@@ -1,14 +1,14 @@
-import { SetListItem } from "../../types/setlist";
+import { SetListItem } from "../../app/types/setlist";
 
-interface NextItemProps {
+interface PreviousItemProps {
   item: SetListItem | null;
 }
 
-export default function NextItem({ item }: NextItemProps) {
+export default function PreviousItem({ item }: PreviousItemProps) {
   return (
     <div>
       <p className="text-sm opacity-50">
-        Siguiente
+        Anterior
       </p>
 
       <p className="text-lg">

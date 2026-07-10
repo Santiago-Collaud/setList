@@ -1,13 +1,13 @@
 "use client";
 
-import ImportButton from "../app/components/viewer/ImportButton";
+import ImportButton from "@/components/viewer/ImportButton";
 import { useSetList } from "../app/hoocks/useSetList";
 
-import CurrentItem from "../app/components/viewer/CurrentItem";
-import PreviousItems from "../app/components/viewer/PreviousItem";
-import NextItem from "../app/components/viewer/NextItem";
-import EmptyState from "../app/components/viewer/emptyState";
-import Controls from "../app/components/viewer/Controls";
+import CurrentItem from "@//components/viewer/CurrentItem";
+import PreviousItems from "@//components/viewer/PreviousItem";
+import NextItem from "@//components/viewer/NextItem";
+import EmptyState from "@/components/viewer/emptyState";
+import Controls from "@/components/viewer/Controls";
 
 export default function Home() {
   const {
