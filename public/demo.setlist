@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "banda": "Banda Municipal",
+  "show": "Estación Sosa",
+  "fecha": "2026-07-10",
+  "items": [
+    {
+      "tipo": "tema",
+      "color": "green",
+      "nombre": "Bella Ciao",
+      "tono": "Am",
+      "tempo": 120,
+      "nota": "Comienza guitarra"
+    },
+    {
+      "tipo": "pausa",
+      "color": "red",
+      "nombre": "Cambio de instrumentos",
+      "nota": "30 segundos"
+    },
+    {
+      "tipo": "tema",
+      "color": "green",
+      "nombre": "Barrilito de cerveza",
+      "tono": "Bm",
+      "tempo": 120,
+      "nota": "Comienza percusion"
+    },
+    {
+      "tipo": "tema",
+      "color": "green",
+      "nombre": "Despedida",
+      "tono": "Bm",
+      "tempo": 120,
+      "nota": "Comienza percusion"
+    }
+  ]
+}

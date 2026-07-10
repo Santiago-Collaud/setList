@@ -27,8 +27,8 @@ Dejar la base del proyecto lista para comenzar el desarrollo.
 - [x] Configurar ramas `main` y `developer`
 - [x] Instalar DaisyUI
 - [x] Crear estructura de carpetas
-- [ ] Definir interfaces TypeScript
-- [ ] Crear pantalla inicial
+- [x] Definir interfaces TypeScript
+- [x] Crear pantalla inicial
 
 ---
 
@@ -40,11 +40,11 @@ Permitir importar un archivo `.setlist`.
 
 ### Checklist
 
-- [ ] Botón Importar
-- [ ] Leer archivo
-- [ ] Parsear JSON
-- [ ] Validar formato
-- [ ] Mostrar errores
+- [x] Botón Importar
+- [x] Leer archivo
+- [x] Parsear JSON
+- [x] Validar formato
+- [x] Mostrar errores
 - [ ] Cargar en memoria
 
 ---
