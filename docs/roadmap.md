@@ -45,7 +45,7 @@ Permitir importar un archivo `.setlist`.
 - [x] Parsear JSON
 - [x] Validar formato
 - [x] Mostrar errores
-- [ ] Cargar en memoria
+- [x] Cargar en memoria
 
 ---
 

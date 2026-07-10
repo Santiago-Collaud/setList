@@ -27,8 +27,8 @@
       "nota": "Comienza percusion"
     },
     {
-      "tipo": "tema",
-      "color": "green",
+      "tipo": "pausa",
+      "color": "blue",
       "nombre": "Despedida",
       "tono": "Bm",
       "tempo": 120,

@@ -3,11 +3,13 @@
 import ImportButton from "@/components/viewer/ImportButton";
 import { useSetList } from "../app/hoocks/useSetList";
 
-import CurrentItem from "@//components/viewer/CurrentItem";
-import PreviousItems from "@//components/viewer/PreviousItem";
-import NextItem from "@//components/viewer/NextItem";
+import CurrentItem from "@/components/viewer/CurrentItem";
+import PreviousItems from "@/components/viewer/PreviousItem";
+import NextItem from "@/components/viewer/NextItem";
 import EmptyState from "@/components/viewer/emptyState";
 import Controls from "@/components/viewer/Controls";
+import AppMenu from "@/components/viewer/AppMenu";
+//import ThemeButton from "@/components/viewer/ThemeButton";
 
 export default function Home() {
   const {
@@ -26,13 +28,18 @@ export default function Home() {
 
       <header className="navbar bg-base-100 shadow">
 
-        <div className="flex-1">
-          <h1 className="text-xl font-bold">
-            SetList Viewer
-          </h1>
-        </div>
+       <AppMenu
+        onImport={importSetList}
+        />
 
-        <ImportButton onImport={importSetList} />
+    <div className="flex-1 justify-center">
+        <h1 className="font-bold">
+            SetList
+        </h1>
+    </div>
+
+    {/*<ThemeButton />*/}
+    <ImportButton onImport={importSetList} />
 
       </header>
 

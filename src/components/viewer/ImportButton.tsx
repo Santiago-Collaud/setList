@@ -1,38 +1,32 @@
 "use client";
 
-import { useRef } from "react";
-
 interface ImportButtonProps {
   onImport: (file: File) => void;
 }
 
-export default function ImportButton({
-  onImport,
-}: ImportButtonProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
+export default function ImportButton({ onImport }: ImportButtonProps) {
   return (
-    <>
+    <div>
       <input
-        ref={inputRef}
+        id="file-import"
         type="file"
-        accept=".setlist,.json"
-        hidden
+        accept=".setlist,.json,application/json"
+        className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
-
           if (file) {
             onImport(file);
           }
         }}
       />
 
-      <button
-        className="btn btn-primary"
-        onClick={() => inputRef.current?.click()}
+      <label
+        htmlFor="file-import"
+        className="btn btn-outline"
+
       >
         Importar
-      </button>
-    </>
+      </label>
+    </div>
   );
 }
