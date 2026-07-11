@@ -1,15 +1,12 @@
 "use client";
 
-import ImportButton from "@/components/viewer/ImportButton";
 import { useSetList } from "../app/hoocks/useSetList";
 
 import CurrentItem from "@/components/viewer/CurrentItem";
 import PreviousItems from "@/components/viewer/PreviousItem";
 import NextItem from "@/components/viewer/NextItem";
 import EmptyState from "@/components/viewer/emptyState";
-import Controls from "@/components/viewer/Controls";
 import AppMenu from "@/components/viewer/AppMenu";
-//import ThemeButton from "@/components/viewer/ThemeButton";
 
 export default function Home() {
   const {
@@ -28,61 +25,92 @@ export default function Home() {
 
       <header className="navbar bg-base-100 shadow">
 
-       <AppMenu
-        onImport={importSetList}
-        />
+        <AppMenu onImport={importSetList} />
 
-    <div className="flex-1 justify-center">
-        <h1 className="font-bold">
+        <div className="flex-1 justify-center">
+          <h1 className="font-bold">
             SetList
-        </h1>
-    </div>
-
-    {/*<ThemeButton />*/}
-    <ImportButton onImport={importSetList} />
+          </h1>
+        </div>
 
       </header>
 
       {!setList ? (
-
         <EmptyState />
-
       ) : (
 
-        <section className="flex-1 flex flex-col justify-between p-8">
+        <section className="flex-1 flex flex-col p-4">
 
-          <div>
+          {/* Información del show */}
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold border-b">
+              {setList.show}
+            </h2>
 
-        <p className="text-sm opacity-60">
-            {currentIndex + 1} / {setList.items.length}
-        </p>
+            <h3 className="text-lg opacity-60">
+              {setList.fecha}
+            </h3>
+          </div>
 
-        <h2 className="text-2xl font-bold">
-            {setList.show}
-        </h2>
+          {/* Contenido principal */}
+          <div className="flex-1 flex flex-col landscape:flex-row gap-4">
 
-    </div>
+            {/* Anterior */}
+            <div className="landscape:w-1/4 flex">
+              <div className="w-full flex justify-between items-center border rounded-xl p-2 landscape:flex-col">
+                <PreviousItems item={previousItem ?? null} />
+                <button
+                  className="btn btn-primary flex-1 w-50 h-15 hidden mt-2 landscape:flex"
+                  onClick={previous}
+                >
+                  ◀
+                </button>
+              </div>
+            </div>
 
-    <div className="space-y-6">
+            {/* Actual */}
+            <div className="landscape:w-2/4 flex">
+              <div className="w-full">
+                <p className="text-sm opacity-60 text-center mb-2 border rounded-lg p-1">
+                  {currentIndex + 1} / {setList.items.length}
+                </p>
+                <CurrentItem item={currentItem ?? null} />
+              </div>
+            </div>
 
-        <PreviousItems item={previousItem ?? null} />
-
-        <CurrentItem item={currentItem ?? null} />
-
-        <NextItem item={nextItem ?? null} />
-
-    </div>
-
-    <Controls
-        onPrevious={previous}
-        onNext={next}
-    />
-
+            {/* Siguiente */}
+            <div className="landscape:w-1/4 flex">
+              <div className="w-full flex justify-between items-center border rounded-xl p-2 landscape:flex-col">
+                <NextItem item={nextItem ?? null} />
+                
+                <button
+                className="btn btn-primary flex-1 w-50 h-15 hidden mt-2 landscape:flex"
+                onClick={next}
+              >
+                ▶
+              </button>
+              </div>
+            </div>
+          </div>
+          {/* Controles */}
+          <div className="landscape:hidden flex gap-2 mb-4">
+            <button
+                  className="btn btn-primary flex-1 h-32"
+                  onClick={previous}
+                >
+                  ◀
+                </button>
+                 <button
+              className="btn btn-primary flex-1 h-32"
+              onClick={next}
+            >
+              ▶
+            </button>
+          </div>
 
         </section>
 
       )}
-
     </main>
   );
 }
