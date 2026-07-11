@@ -1,5 +1,5 @@
 "use client";
-
+import { useState , useEffect } from "react";
 import { useSetList } from "../app/hoocks/useSetList";
 
 import CurrentItem from "@/components/viewer/CurrentItem";
@@ -7,6 +7,7 @@ import PreviousItems from "@/components/viewer/PreviousItem";
 import NextItem from "@/components/viewer/NextItem";
 import EmptyState from "@/components/viewer/emptyState";
 import AppMenu from "@/components/viewer/AppMenu";
+
 
 export default function Home() {
   const {
@@ -20,12 +21,43 @@ export default function Home() {
     previous,
   } = useSetList();
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const [infoModal, setInfoModal] = useState<
+  "licencia" | "contacto" | "about" | null
+>(null);
+
+  useEffect(() => {
+  const handler = () => {
+    setIsFullscreen(!!document.fullscreenElement);
+  };
+
+  document.addEventListener("fullscreenchange", handler);
+
+  return () => {
+    document.removeEventListener("fullscreenchange", handler);
+  };
+}, []);
+
+  function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
   return (
     <main className="min-h-screen bg-base-300 flex flex-col">
 
       <header className="navbar bg-base-100 shadow">
 
-        <AppMenu onImport={importSetList} />
+        <AppMenu
+          onImport={importSetList}
+          onFullscreen={toggleFullscreen}
+          isFullscreen={isFullscreen}
+          onInfo={setInfoModal}
+        />
 
         <div className="flex-1 justify-center">
           <h1 className="font-bold">
@@ -110,6 +142,70 @@ export default function Home() {
 
         </section>
 
+      )}
+      {infoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+
+          <div className="bg-base-100 rounded-xl p-6 w-11/12 max-w-md">
+
+            {infoModal === "licencia" && (
+              <>
+                <h2 className="text-xl font-bold">
+                  Licencia
+                </h2>
+
+                <p className="mt-4">
+                  SetList Viewer
+                </p>
+
+                <p className="mt-2">
+                  Software desarrollado para
+                  visualización de listas de temas
+                  en ensayos y presentaciones.
+                </p>
+              </>
+            )}
+
+            {infoModal === "contacto" && (
+              <>
+                <h2 className="text-xl font-bold">
+                  Contacto
+                </h2>
+
+                <p className="mt-4">
+                  COLLAUD design
+                </p>
+
+                <p>
+                  santiagocollaud.com.ar
+                </p>
+              </>
+            )}
+
+            {infoModal === "about" && (
+              <>
+                <h2 className="text-xl font-bold">
+                  Acerca de
+                </h2>
+
+                <p className="mt-4">
+                  SetList nace como una herramienta
+                  para músicos y técnicos que necesitan
+                  tener la estructura del show disponible.
+                </p>
+              </>
+            )}
+
+            <button
+              className="btn mt-6"
+              onClick={() => setInfoModal(null)}
+            >
+              Cerrar
+            </button>
+
+          </div>
+
+        </div>
       )}
     </main>
   );
