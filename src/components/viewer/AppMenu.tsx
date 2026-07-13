@@ -10,6 +10,7 @@ import {
   FileText,
   Mail,
   Info,
+  LibraryBig,
 } from "lucide-react";
 
 interface AppMenuProps {
@@ -19,9 +20,10 @@ interface AppMenuProps {
   onInfo: (
     value: "licencia" | "contacto" | "about"
   ) => void;
+  onMySetLists: () => void;
 }
 
-export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo }: AppMenuProps) {
+export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists }: AppMenuProps) {
     
   return (
     <div className="dropdown">
@@ -42,6 +44,12 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo }
         </li>
         <li>
           <a><FolderOpen size={18} /><ImportButton onImport={onImport} /> </a>
+        </li>
+        <li>
+          <button onClick={onMySetLists}>
+            <LibraryBig size={18} />
+            Mis SetLists
+          </button>
         </li>
 
         <li>

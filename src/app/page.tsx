@@ -7,21 +7,26 @@ import PreviousItems from "@/components/viewer/PreviousItem";
 import NextItem from "@/components/viewer/NextItem";
 import EmptyState from "@/components/viewer/emptyState";
 import AppMenu from "@/components/viewer/AppMenu";
+import MySetListsModal from "@/components/viewer/MySetListsModal";
 
 
 export default function Home() {
   const {
-    setList,
-    currentIndex,
-    currentItem,
-    previousItem,
-    nextItem,
-    importSetList,
-    next,
-    previous,
-  } = useSetList();
+  setList,
+  currentIndex,
+  currentItem,
+  previousItem,
+  nextItem,
+  importSetList,
+  getStoredSetLists,
+  openSetList,
+  deleteStoredSetList,
+  next,
+  previous,
+} = useSetList();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showMySetLists, setShowMySetLists] = useState(false);
 
   const [infoModal, setInfoModal] = useState<
   "licencia" | "contacto" | "about" | null
@@ -57,6 +62,7 @@ export default function Home() {
           onFullscreen={toggleFullscreen}
           isFullscreen={isFullscreen}
           onInfo={setInfoModal}
+          onMySetLists={() => setShowMySetLists(true)}
         />
 
         <div className="flex-1 justify-center">
@@ -89,7 +95,7 @@ export default function Home() {
 
             {/* Anterior */}
             <div className="landscape:w-1/4 flex">
-              <div className="w-full flex justify-between items-center border rounded-xl p-2 landscape:flex-col">
+              <div className="w-full flex justify-between items-center border border-orange-400 rounded-xl p-2 landscape:flex-col">
                 <PreviousItems item={previousItem ?? null} />
                 <button
                   className="btn btn-primary flex-1 w-50 h-15 hidden mt-2 landscape:flex"
@@ -103,7 +109,7 @@ export default function Home() {
             {/* Actual */}
             <div className="landscape:w-2/4 flex">
               <div className="w-full">
-                <p className="text-sm opacity-60 text-center mb-2 border rounded-lg p-1">
+                <p className="text-sm opacity-60 text-center mb-2 border border-red-600 rounded-lg p-1">
                   {currentIndex + 1} / {setList.items.length}
                 </p>
                 <CurrentItem item={currentItem ?? null} />
@@ -112,7 +118,7 @@ export default function Home() {
 
             {/* Siguiente */}
             <div className="landscape:w-1/4 flex">
-              <div className="w-full flex justify-between items-center border rounded-xl p-2 landscape:flex-col">
+              <div className="w-full flex justify-between items-center border border-orange-400 rounded-xl p-2 landscape:flex-col">
                 <NextItem item={nextItem ?? null} />
                 
                 <button
@@ -143,6 +149,17 @@ export default function Home() {
         </section>
 
       )}
+      {/* Modal de Mis SetLists */}
+      {showMySetLists && (
+        <MySetListsModal
+          open={showMySetLists}
+          onClose={() => setShowMySetLists(false)}
+          getStoredSetLists={getStoredSetLists}
+          openSetList={openSetList}
+          deleteStoredSetList={deleteStoredSetList}
+        />
+      )}
+      {/* Modal de información */}
       {infoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 

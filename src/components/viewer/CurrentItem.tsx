@@ -17,7 +17,7 @@ export default function CurrentItem({ item }: CurrentItemProps) {
   const bgColor = SETLIST_COLORS[item.color as keyof typeof SETLIST_COLORS] ?? SETLIST_COLORS.default;
 
   return (
-    <div className="border rounded-xl p-8 min-h-80 flex flex-col" style={{ backgroundColor: bgColor }}>
+    <div className=" rounded-xl p-8 min-h-80 flex flex-col" style={{ backgroundColor: bgColor }}>
 
       <p className="text-sm opacity-50">
         Actual

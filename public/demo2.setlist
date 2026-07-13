@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "banda": "Banda Municipal",
-  "show": "Estación Sosa",
+  "banda": "Nuevo encuentro",
+  "show": "Pan Casero",
   "fecha": "2026-07-10",
   "items": [
     {
@@ -21,7 +21,7 @@
     {
       "tipo": "tema",
       "color": "green",
-      "nombre": "Barrilito de cerveza",
+      "nombre": "Penas y alegrias del amor",
       "tono": "Bm",
       "tempo": 120,
       "nota": "Comienza percusion"
@@ -29,7 +29,7 @@
     {
       "tipo": "tema",
       "color": "green",
-      "nombre": "Funky",
+      "nombre": "Chacarera del rancho",
       "tono": "Bm",
       "tempo": 120,
       "nota": "Comienza percusion"
