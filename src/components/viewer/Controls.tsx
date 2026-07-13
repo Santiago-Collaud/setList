@@ -8,17 +8,15 @@ export default function Controls({
   onNext,
 }: ControlsProps) {
   return (
-    <div className="flex gap-4">
-
+    <div className="flex gap-2 mb-4">
       <button
-        className="btn btn-primary flex-1"
+        className="btn btn-primary flex-1 h-32"
         onClick={onPrevious}
       >
         ◀
       </button>
-
       <button
-        className="btn btn-primary flex-1"
+        className="btn btn-primary flex-1 h-32"
         onClick={onNext}
       >
         ▶

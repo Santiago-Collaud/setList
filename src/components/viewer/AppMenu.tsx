@@ -1,5 +1,5 @@
 "use client";
-import { useSetList } from "../../../src/app/hoocks/useSetList";
+
 import ImportButton from "@/components/viewer/ImportButton";
 
 import {
@@ -10,13 +10,20 @@ import {
   FileText,
   Mail,
   Info,
+  LibraryBig,
 } from "lucide-react";
 
 interface AppMenuProps {
   onImport: (file: File) => Promise<void>;
+  onFullscreen: () => void;
+  isFullscreen: boolean;
+  onInfo: (
+    value: "licencia" | "contacto" | "about"
+  ) => void;
+  onMySetLists: () => void;
 }
 
-export default function AppMenu({ onImport }: AppMenuProps) {
+export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists }: AppMenuProps) {
     
   return (
     <div className="dropdown">
@@ -38,6 +45,12 @@ export default function AppMenu({ onImport }: AppMenuProps) {
         <li>
           <a><FolderOpen size={18} /><ImportButton onImport={onImport} /> </a>
         </li>
+        <li>
+          <button onClick={onMySetLists}>
+            <LibraryBig size={18} />
+            Mis SetLists
+          </button>
+        </li>
 
         <li>
           <a><SquarePen size={18} /> Crear SetList</a>
@@ -50,7 +63,10 @@ export default function AppMenu({ onImport }: AppMenuProps) {
         <span>Visualización</span>
         </li>
         <li>
-          <a> <Monitor size={18} /> Pantalla completa</a>
+          <button onClick={onFullscreen}>
+            <Monitor size={18} />
+            {isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+          </button>
         </li>
 
         <li>
@@ -60,15 +76,24 @@ export default function AppMenu({ onImport }: AppMenuProps) {
         <span>Información</span>
         </li>
         <li>
-          <a><FileText size={18} /> Licencia</a>
+          <button onClick={() => onInfo("licencia")}>
+            <FileText size={18} />
+            Licencia
+          </button>
         </li>
 
         <li>
-          <a> <Mail size={18} /> Contacto</a>
+          <button onClick={() => onInfo("contacto")}>
+            <Mail size={18} />
+            Contacto
+          </button>
         </li>
 
         <li>
-          <a><Info size={18} /> Acerca de</a>
+          <button onClick={() => onInfo("about")}>
+            <Info size={18} />
+            Acerca de
+          </button>
         </li>
       </ul>
 

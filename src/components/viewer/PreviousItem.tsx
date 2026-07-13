@@ -12,7 +12,7 @@ export default function PreviousItem({ item }: PreviousItemProps) {
       </p>
 
       <p className="text-lg">
-        {item?.nombre ?? "-"}
+        {item?.nombre ?? "-"} 
       </p>
     </div>
   );
