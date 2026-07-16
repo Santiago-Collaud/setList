@@ -11,6 +11,7 @@ import {
   Mail,
   Info,
   LibraryBig,
+  Download,
 } from "lucide-react";
 
 interface AppMenuProps {
@@ -21,9 +22,11 @@ interface AppMenuProps {
     value: "licencia" | "contacto" | "about"
   ) => void;
   onMySetLists: () => void;
+  onInstall: () => void;
+  showInstall: boolean;
 }
 
-export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists }: AppMenuProps) {
+export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists, onInstall, showInstall }: AppMenuProps) {
     
   return (
     <div className="dropdown">
@@ -68,6 +71,20 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
             {isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
           </button>
         </li>
+        
+        {showInstall && (
+          <>
+            <li>
+              <hr />
+            </li>
+            <li>
+              <button onClick={onInstall}>
+                <Download size={18} />
+                Instalar aplicación
+              </button>
+            </li>
+          </>
+        )}
 
         <li>
           <hr />
