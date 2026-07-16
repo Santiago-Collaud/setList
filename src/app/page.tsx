@@ -10,6 +10,7 @@ import AppMenu from "@/components/viewer/AppMenu";
 import MySetListsModal from "@/components/viewer/MySetListsModal";
 
 
+
 export default function Home() {
   const {
   setList,
@@ -32,6 +33,11 @@ export default function Home() {
   "licencia" | "contacto" | "about" | null
 >(null);
 
+  //PWA
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+
   useEffect(() => {
   const handler = () => {
     setIsFullscreen(!!document.fullscreenElement);
@@ -52,6 +58,46 @@ export default function Home() {
   }
 }
 
+useEffect(() => {
+
+  const handler = (e: any) => {
+    e.preventDefault();
+    setInstallPrompt(e);
+  };
+
+  window.addEventListener("beforeinstallprompt", handler);
+
+  if (
+    window.matchMedia("(display-mode: standalone)").matches
+  ) {
+    setIsInstalled(true);
+  }
+
+  return () => {
+    window.removeEventListener(
+      "beforeinstallprompt",
+      handler
+    );
+  };
+
+}, []);
+
+async function installApp() {
+
+  if (!installPrompt) return;
+
+  installPrompt.prompt();
+
+  const result = await installPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    setIsInstalled(true);
+  }
+
+  setInstallPrompt(null);
+
+}
+
   return (
     <main className="min-h-screen bg-base-300 flex flex-col">
 
@@ -63,11 +109,14 @@ export default function Home() {
           isFullscreen={isFullscreen}
           onInfo={setInfoModal}
           onMySetLists={() => setShowMySetLists(true)}
+          
+          onInstall={installApp}
+          showInstall={!isInstalled && !!installPrompt}
         />
 
         <div className="flex-1 justify-center">
           <h1 className="font-bold">
-            SetList
+            <img src="/icons/queSigue-texto.png" alt="queSigue-icon" className="inline-block w-auto h-8 mr-2" />
           </h1>
         </div>
 
