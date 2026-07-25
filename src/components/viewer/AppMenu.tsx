@@ -12,10 +12,12 @@ import {
   Info,
   LibraryBig,
   Download,
+  QrCode,
 } from "lucide-react";
 
 interface AppMenuProps {
   onImport: (file: File) => Promise<void>;
+  onScanQR: () => void;
   onFullscreen: () => void;
   isFullscreen: boolean;
   onInfo: (
@@ -26,7 +28,7 @@ interface AppMenuProps {
   showInstall: boolean;
 }
 
-export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists, onInstall, showInstall }: AppMenuProps) {
+export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists, onInstall, showInstall ,onScanQR, }: AppMenuProps) {
     
   return (
     <div className="dropdown">
@@ -47,6 +49,12 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
         </li>
         <li>
           <a><FolderOpen size={18} /><ImportButton onImport={onImport} /> </a>
+        </li>
+        <li>
+          <button onClick={onScanQR}>
+            <QrCode size={18} />
+            Escanear QR
+          </button>
         </li>
         <li>
           <button onClick={onMySetLists}>

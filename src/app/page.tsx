@@ -8,6 +8,7 @@ import NextItem from "@/components/viewer/NextItem";
 import EmptyState from "@/components/viewer/emptyState";
 import AppMenu from "@/components/viewer/AppMenu";
 import MySetListsModal from "@/components/viewer/MySetListsModal";
+import QRScanner from "../components/qr/QRScanner";
 
 
 
@@ -36,6 +37,8 @@ export default function Home() {
   //PWA
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [isInstalled, setIsInstalled] = useState(false);
+
+  const [showQRScanner, setShowQRScanner] = useState(false);
 
 
   useEffect(() => {
@@ -97,6 +100,28 @@ async function installApp() {
   setInstallPrompt(null);
 
 }
+//FUNCION PARA PROCESAR QR
+async function handleQRScan(url: string) {
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    alert("No se pudo descargar el SetList.");
+    return;
+  }
+
+  const json = await response.json();
+
+  const file = new File(
+    [JSON.stringify(json)],
+    "setlist.setlist",
+    {
+      type: "application/json",
+    }
+  );
+
+  await importSetList(file);
+}
 
   return (
     <main className="min-h-screen bg-base-300 flex flex-col">
@@ -112,6 +137,7 @@ async function installApp() {
           
           onInstall={installApp}
           showInstall={!isInstalled && !!installPrompt}
+          onScanQR={() => setShowQRScanner(true)}
         />
 
         <div className="flex-1 justify-center">
@@ -208,6 +234,7 @@ async function installApp() {
           deleteStoredSetList={deleteStoredSetList}
         />
       )}
+      
       {/* Modal de información */}
       {infoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -273,6 +300,11 @@ async function installApp() {
 
         </div>
       )}
+      <QRScanner
+        open={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onScan={handleQRScan}
+      />
     </main>
   );
 }
