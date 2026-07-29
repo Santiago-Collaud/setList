@@ -127,35 +127,48 @@ async function handleQRScan(url: string) {
 
   alert("QR recibido:\n" + url);
 
-  const response = await fetch(url);
+  try {
 
-  alert("Respuesta fetch: " + response.status);
+    alert("Antes del fetch");
 
-  if (!response.ok) {
-    alert("No se pudo descargar el SetList.");
-    return;
-  }
+    const response = await fetch(url);
 
-  const json = await response.json();
+    alert("Fetch terminado: " + response.status);
 
-  alert(
-    "JSON recibido:\n" +
-    JSON.stringify(json).substring(0, 200)
-  );
-
-  const file = new File(
-    [JSON.stringify(json)],
-    "setlist.setlist",
-    {
-      type: "application/json",
+    if (!response.ok) {
+      alert("No se pudo descargar el SetList.");
+      return;
     }
-  );
 
-  alert("Archivo creado. Importando...");
+    const json = await response.json();
 
-  await importSetList(file);
+    alert(
+      "JSON recibido:\n" +
+      JSON.stringify(json).substring(0, 200)
+    );
 
-  alert("Importación terminada.");
+    const file = new File(
+      [JSON.stringify(json)],
+      "setlist.setlist",
+      {
+        type: "application/json",
+      }
+    );
+
+    alert("Archivo creado");
+
+    await importSetList(file);
+
+    alert("Importación terminada");
+
+  } catch (error) {
+
+    alert(
+      "ERROR QR:\n" +
+      String(error)
+    );
+
+  }
 }
 
   return (
