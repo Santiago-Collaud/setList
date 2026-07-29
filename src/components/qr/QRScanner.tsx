@@ -6,7 +6,7 @@ import { Html5Qrcode } from "html5-qrcode";
 interface QRScannerProps {
   open: boolean;
   onClose: () => void;
-  onScan: (value: string) => void;
+  onScan: (value: string) => Promise<void>;
 }
 
 export default function QRScanner({
@@ -43,8 +43,10 @@ export default function QRScanner({
 
               scanner.clear();
 
-              onScan(decodedText);
+              await onScan(decodedText);
 
+              console.log("QR procesado correctamente");
+              
               onClose();
 
             } catch (err) {
