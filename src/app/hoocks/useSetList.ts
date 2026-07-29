@@ -24,7 +24,7 @@ export function useSetList() {
     setSetList(last.data);
     setCurrentIndex(0);
   }
-
+/*
   async function importSetList(file: File) {
     try {
       const data = await SetListService.load(file);
@@ -55,7 +55,51 @@ export function useSetList() {
       );
     }
   }
+*/
+async function importSetList(file: File) {
+  try {
 
+    alert("SetListService.load iniciando");
+
+    const data = await SetListService.load(file);
+
+    alert(
+      "Parser OK:\n" +
+      JSON.stringify(data).substring(0, 200)
+    );
+
+    const id = `${data.banda}|${data.show}|${data.fecha}`;
+    const now = new Date().toISOString();
+
+    const existing = await db.setlists.get(id);
+
+    await db.setlists.put({
+      id,
+      banda: data.banda,
+      show: data.show,
+      fecha: data.fecha,
+      created_at: existing?.created_at ?? now,
+      last_opened: now,
+      data,
+    });
+
+    alert("Guardado en IndexedDB");
+
+    setSetList(data);
+    setCurrentIndex(0);
+
+    alert("Estado actualizado");
+
+  } catch (error) {
+
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Error al importar el archivo."
+    );
+
+  }
+}
   async function getStoredSetLists() {
   return await db.setlists
     .orderBy("last_opened")
