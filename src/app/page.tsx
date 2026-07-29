@@ -101,6 +101,7 @@ async function installApp() {
 
 }
 //FUNCION PARA PROCESAR QR
+/*
 async function handleQRScan(url: string) {
 
   const response = await fetch(url);
@@ -121,6 +122,40 @@ async function handleQRScan(url: string) {
   );
 
   await importSetList(file);
+}*/
+async function handleQRScan(url: string) {
+
+  alert("QR recibido:\n" + url);
+
+  const response = await fetch(url);
+
+  alert("Respuesta fetch: " + response.status);
+
+  if (!response.ok) {
+    alert("No se pudo descargar el SetList.");
+    return;
+  }
+
+  const json = await response.json();
+
+  alert(
+    "JSON recibido:\n" +
+    JSON.stringify(json).substring(0, 200)
+  );
+
+  const file = new File(
+    [JSON.stringify(json)],
+    "setlist.setlist",
+    {
+      type: "application/json",
+    }
+  );
+
+  alert("Archivo creado. Importando...");
+
+  await importSetList(file);
+
+  alert("Importación terminada.");
 }
 
   return (
