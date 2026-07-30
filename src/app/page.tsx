@@ -125,27 +125,27 @@ async function handleQRScan(url: string) {
 }*/
 async function handleQRScan(url: string) {
 
-  alert("QR recibido:\n" + url);
+  alert("QR recibido: " + url);
 
   try {
 
-    alert("Antes del fetch");
+    alert("antes del fetch");
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "no-store",
+    });
 
-    alert("Fetch terminado: " + response.status);
+    alert("respuesta recibida: " + response.status);
 
     if (!response.ok) {
-      alert("No se pudo descargar el SetList.");
+      alert("HTTP error: " + response.status);
       return;
     }
 
     const json = await response.json();
 
-    alert(
-      "JSON recibido:\n" +
-      JSON.stringify(json).substring(0, 200)
-    );
+    alert("JSON recibido");
 
     const file = new File(
       [JSON.stringify(json)],
@@ -155,18 +155,20 @@ async function handleQRScan(url: string) {
       }
     );
 
-    alert("Archivo creado");
-
     await importSetList(file);
 
-    alert("Importación terminada");
+    alert("SetList cargado");
 
   } catch (error) {
 
     alert(
-      "ERROR QR:\n" +
-      String(error)
+      "Error QR: " +
+      (error instanceof Error
+        ? error.message
+        : String(error))
     );
+
+    console.error(error);
 
   }
 }
