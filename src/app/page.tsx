@@ -25,6 +25,8 @@ export default function Home() {
   deleteStoredSetList,
   next,
   previous,
+  importDemo,
+  clearCurrentSetList,
 } = useSetList();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -100,29 +102,8 @@ async function installApp() {
   setInstallPrompt(null);
 
 }
-//FUNCION PARA PROCESAR QR
 /*
-async function handleQRScan(url: string) {
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    alert("No se pudo descargar el SetList.");
-    return;
-  }
-
-  const json = await response.json();
-
-  const file = new File(
-    [JSON.stringify(json)],
-    "setlist.setlist",
-    {
-      type: "application/json",
-    }
-  );
-
-  await importSetList(file);
-}*/
+HANDLEQRScann para debuguear
 async function handleQRScan(url: string) {
 
   try {
@@ -174,7 +155,43 @@ async function handleQRScan(url: string) {
   }
 
 }
+*/
 
+async function handleQRScan(url: string) {
+
+  try {
+
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      alert("No se pudo descargar el SetList.");
+      return;
+    }
+
+    const json = await response.json();
+
+    const file = new File(
+      [JSON.stringify(json)],
+      "setlist.setlist",
+      {
+        type: "application/json",
+      }
+    );
+
+    await importSetList(file);
+
+  } catch (err) {
+
+    console.error("Error leyendo QR:", err);
+
+    alert("Ocurrió un error al importar el SetList.");
+
+  }
+
+}
   return (
     <main className="min-h-screen bg-base-300 flex flex-col">
 
@@ -190,6 +207,7 @@ async function handleQRScan(url: string) {
           onInstall={installApp}
           showInstall={!isInstalled && !!installPrompt}
           onScanQR={() => setShowQRScanner(true)}
+          onClearSetList={clearCurrentSetList}
         />
 
         <div className="flex-1 justify-center">
@@ -201,7 +219,7 @@ async function handleQRScan(url: string) {
       </header>
 
       {!setList ? (
-        <EmptyState />
+        <EmptyState onDemo={importDemo} />
       ) : (
 
         <section className="flex-1 flex flex-col p-4">
@@ -300,14 +318,28 @@ async function handleQRScan(url: string) {
                 </h2>
 
                 <p className="mt-4">
-                  SetList Viewer
+                  queSigue Viewer
                 </p>
 
-                <p className="mt-2">
-                  Software desarrollado para
-                  visualización de listas de temas
-                  en ensayos y presentaciones.
+                <div className="mt-2 space-y-2">
+                <p>Versión 0.1.0</p>
+
+                <p>
+                  Software desarrollado por COLLAUD design para la visualización
+                  de SetLists en ensayos y presentaciones en vivo.
                 </p>
+
+                <p>Todos los derechos reservados.</p>
+
+                <p>
+                  Este software no puede ser redistribuido, modificado ni
+                  comercializado sin autorización expresa del autor.
+                </p>
+
+                <p className="font-bold">
+                  © 2026 SantiagoCollaud.com.ar
+                </p>
+              </div>
               </>
             )}
 
@@ -318,11 +350,11 @@ async function handleQRScan(url: string) {
                 </h2>
 
                 <p className="mt-4">
-                  COLLAUD design
+                  SANTIAGO COLLAUD 
                 </p>
 
                 <p>
-                  santiagocollaud.com.ar
+                  www.santiagocollaud.com.ar/contacto
                 </p>
               </>
             )}
@@ -334,10 +366,18 @@ async function handleQRScan(url: string) {
                 </h2>
 
                 <p className="mt-4">
-                  SetList nace como una herramienta
-                  para músicos y técnicos que necesitan
-                  tener la estructura del show disponible.
-                </p>
+                  queSigue es una suite de creacion y 
+                  visualizacion de listas de temas o 
+                  items para bandas y staff en ensayos o 
+                  actuaciones en vivo.
+                  </p>
+                  <p>
+                  Su uso no se limita a nombres de canciones, 
+                  tambien a momentos, detalles, blackouts, presentaciones o pausas
+                  que se deben desarrollar durante la perfomance.
+                  </p>
+                 
+                
               </>
             )}
 

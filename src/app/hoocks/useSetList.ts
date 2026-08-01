@@ -24,7 +24,7 @@ export function useSetList() {
     setSetList(last.data);
     setCurrentIndex(0);
   }
-/*
+
   async function importSetList(file: File) {
     try {
       const data = await SetListService.load(file);
@@ -47,6 +47,8 @@ export function useSetList() {
       setSetList(data);
       setCurrentIndex(0);
 
+      alert("Set list listo para visualizar");
+
     } catch (error) {
       alert(
         error instanceof Error
@@ -55,7 +57,8 @@ export function useSetList() {
       );
     }
   }
-*/
+
+  /* importsetList DEBUGUIN
 async function importSetList(file: File) {
   try {
 
@@ -100,6 +103,7 @@ async function importSetList(file: File) {
 
   }
 }
+  */
   async function getStoredSetLists() {
   return await db.setlists
     .orderBy("last_opened")
@@ -123,8 +127,23 @@ async function openSetList(setList: StoredSetList) {
     );
   }
 
-  async function deleteStoredSetList(id: string) {
+async function deleteStoredSetList(id: string) {
+
   await db.setlists.delete(id);
+
+  const last = await db.setlists
+    .orderBy("last_opened")
+    .reverse()
+    .first();
+
+  if (last) {
+    setSetList(last.data);
+    setCurrentIndex(0);
+  } else {
+    setSetList(null);
+    setCurrentIndex(0);
+  }
+
 }
 
   function previous() {
@@ -134,6 +153,31 @@ async function openSetList(setList: StoredSetList) {
       Math.max(current - 1, 0)
     );
   }
+
+ async function importDemo() {
+    const response = await fetch("/demo.setlist");
+
+    if (!response.ok) {
+      throw new Error("No se pudo cargar el SetList demo.");
+    }
+
+    const text = await response.text();
+
+    const file = new File(
+      [text],
+      "demo.setlist",
+      {
+        type: "application/json",
+      }
+    );
+
+    await importSetList(file);
+  }
+
+  function clearCurrentSetList() {
+  setSetList(null);
+  setCurrentIndex(0);
+}
 
   return {
     setList,
@@ -165,5 +209,9 @@ async function openSetList(setList: StoredSetList) {
     next,
 
     previous,
+
+    importDemo,
+
+    clearCurrentSetList,
   };
 }

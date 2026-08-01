@@ -13,6 +13,7 @@ import {
   LibraryBig,
   Download,
   QrCode,
+  Trash2,
 } from "lucide-react";
 
 interface AppMenuProps {
@@ -26,10 +27,32 @@ interface AppMenuProps {
   onMySetLists: () => void;
   onInstall: () => void;
   showInstall: boolean;
+  onClearSetList: () => void;
 }
 
-export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, onMySetLists, onInstall, showInstall ,onScanQR, }: AppMenuProps) {
-    
+export default function AppMenu({
+  onImport,
+  onFullscreen,
+  isFullscreen,
+  onInfo,
+  onMySetLists,
+  onInstall,
+  showInstall,
+  onScanQR,
+  onClearSetList,
+}: AppMenuProps) {
+
+  async function handleClearSetList() {
+
+    const confirmed = confirm(
+      "¿Querés limpiar el SetList actual?"
+    );
+
+    if (!confirmed) return;
+
+    await onClearSetList();
+  }
+
   return (
     <div className="dropdown">
 
@@ -44,18 +67,25 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
         tabIndex={0}
         className="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-64 shadow"
       >
+
         <li className="menu-title">
-        <span>Archivo</span>
+          <span>Archivo</span>
         </li>
+
         <li>
-          <a><FolderOpen size={18} /><ImportButton onImport={onImport} /> </a>
+          <a>
+            <FolderOpen size={18} />
+            <ImportButton onImport={onImport} />
+          </a>
         </li>
+
         <li>
           <button onClick={onScanQR}>
             <QrCode size={18} />
             Escanear QR
           </button>
         </li>
+
         <li>
           <button onClick={onMySetLists}>
             <LibraryBig size={18} />
@@ -64,27 +94,46 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
         </li>
 
         <li>
-          <a><SquarePen size={18} /> Crear SetList</a>
+          <button onClick={handleClearSetList}>
+            <Trash2 size={18} />
+            Limpiar SetList
+          </button>
+        </li>
+
+        <li>
+          <a
+            href="https://www.santiagocollaud.com.ar/quesigue"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <SquarePen size={18} />
+            Crear SetList
+          </a>
         </li>
 
         <li>
           <hr />
         </li>
+
         <li className="menu-title">
-        <span>Visualización</span>
+          <span>Visualización</span>
         </li>
+
         <li>
           <button onClick={onFullscreen}>
             <Monitor size={18} />
-            {isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+            {isFullscreen
+              ? "Salir de pantalla completa"
+              : "Pantalla completa"}
           </button>
         </li>
-        
+
         {showInstall && (
           <>
             <li>
               <hr />
             </li>
+
             <li>
               <button onClick={onInstall}>
                 <Download size={18} />
@@ -97,9 +146,11 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
         <li>
           <hr />
         </li>
+
         <li className="menu-title">
-        <span>Información</span>
+          <span>Información</span>
         </li>
+
         <li>
           <button onClick={() => onInfo("licencia")}>
             <FileText size={18} />
@@ -120,6 +171,7 @@ export default function AppMenu({ onImport, onFullscreen, isFullscreen, onInfo, 
             Acerca de
           </button>
         </li>
+
       </ul>
 
     </div>
