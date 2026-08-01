@@ -4,6 +4,6 @@ export const SETLIST_COLORS = {
   green: "#22c55e",
   yellow: "#eab308",
   purple: "#a855f7",
-  gray: "#6b7280",
-  default: "#ffffff",
+  gray: "#404349",
+  default: "#49a066",
 } as const;

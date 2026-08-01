@@ -1,38 +1,66 @@
 {
   "version": 1,
-  "banda": "Banda Municipal",
-  "show": "Estación Sosa",
+  "banda": "DEMO queSigue",
+  "show": "titulo show",
   "fecha": "2026-07-10",
   "items": [
     {
       "tipo": "tema",
-      "color": "green",
+      "color": "default",
       "nombre": "Bella Ciao",
-      "tono": "Am",
+      "tono": "Bb",
+      "tempo": 120,
+      "nota": "Comienza guitarra"
+    },
+    {
+      "tipo": "tema",
+      "color": "default",
+      "nombre": "Barrilito de cerveza",
+      "tono": "Bb",
       "tempo": 120,
       "nota": "Comienza guitarra"
     },
     {
       "tipo": "pausa",
       "color": "red",
-      "nombre": "Cambio de instrumentos",
+      "nombre": "Historia de la banda",
       "nota": "30 segundos"
     },
     {
       "tipo": "tema",
-      "color": "green",
-      "nombre": "Barrilito de cerveza",
-      "tono": "Bm",
-      "tempo": 120,
-      "nota": "Comienza percusion"
+      "color": "default",
+      "nombre": "La Solapa",
+      "tono": "Em",
+      "tempo": 80,
+      "nota": "Cantante"
+    },
+    {
+      "tipo": "tema",
+      "color": "default",
+      "nombre": "Km 11",
+      "tono": "D",
+      "tempo": 60,
+      "nota": ""
     },
     {
       "tipo": "pausa",
-      "color": "blue",
-      "nombre": "Despedida",
+      "color": "red",
+      "nombre": "Historia de la banda",
+      "nota": "30 segundos"
+    },
+    {
+      "tipo": "tema",
+      "color": "purple",
+      "nombre": "Funky",
       "tono": "Bm",
       "tempo": 120,
-      "nota": "Comienza percusion"
+      "nota": "Arranca guitarra"
+    },
+    {
+      "tipo": "pausa",
+      "color": "gray",
+      "nombre": "BLACKOUT FINAL",
+      "nota": "20 segundos y FULL POWER para saludo"
     }
   ]
 }
