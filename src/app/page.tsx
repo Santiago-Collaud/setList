@@ -10,6 +10,9 @@ import AppMenu from "@/components/viewer/AppMenu";
 import MySetListsModal from "@/components/viewer/MySetListsModal";
 import QRScanner from "../components/qr/QRScanner";
 
+import { SetListFile } from "../app/types/setlist";
+import { db } from "../app/db";
+
 
 
 export default function Home() {
@@ -27,6 +30,7 @@ export default function Home() {
   previous,
   importDemo,
   clearCurrentSetList,
+  updateSetList,
 } = useSetList();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -158,9 +162,23 @@ async function handleQRScan(url: string) {
 */
 
 async function handleQRScan(url: string) {
-
   try {
+    // Obtener el ID del show desde la URL del QR
+    const qrUrl = new URL(url);
+    const remoteId = qrUrl.pathname.split("/").filter(Boolean).pop();
 
+    if (!remoteId) {
+      alert("La URL del QR no contiene un ID válido.");
+      return;
+    }
+
+    // Buscar si ya tenemos este SetList guardado
+    const existing = await db.setlists
+      .where("remote_id")
+      .equals(remoteId)
+      .first();
+
+    // Descargar la versión actual desde el servidor
     const response = await fetch(url, {
       method: "GET",
       cache: "no-store",
@@ -171,8 +189,25 @@ async function handleQRScan(url: string) {
       return;
     }
 
-    const json = await response.json();
+    const json: SetListFile = await response.json();
 
+    // Si ya existe localmente, comparar versiones
+    if (existing) {
+      if (json.version <= existing.data.version) {
+        await db.setlists.update(existing.id, {
+          last_opened: new Date().toISOString(),
+        });
+
+        alert(
+          `El SetList ya está actualizado (versión ${existing.data.version}).`
+        );
+
+        return;
+      }
+    }
+
+    // Si no existe o la versión remota es más nueva,
+    // importamos y guardamos el SetList.
     const file = new File(
       [JSON.stringify(json)],
       "setlist.setlist",
@@ -181,17 +216,16 @@ async function handleQRScan(url: string) {
       }
     );
 
-    await importSetList(file);
+    await importSetList(file, remoteId);
 
   } catch (err) {
-
     console.error("Error leyendo QR:", err);
 
     alert("Ocurrió un error al importar el SetList.");
-
   }
-
 }
+
+
   return (
     <main className="min-h-screen bg-base-300 flex flex-col">
 
@@ -302,6 +336,7 @@ async function handleQRScan(url: string) {
           getStoredSetLists={getStoredSetLists}
           openSetList={openSetList}
           deleteStoredSetList={deleteStoredSetList}
+          updateSetList={updateSetList}
         />
       )}
       

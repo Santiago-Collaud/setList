@@ -13,4 +13,4 @@ export interface SetListFile {
   show: string;
   fecha: string;
   items: SetListItem[];
-}
+} 
