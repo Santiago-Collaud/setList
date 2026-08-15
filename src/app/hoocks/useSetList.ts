@@ -25,38 +25,50 @@ export function useSetList() {
     setCurrentIndex(0);
   }
 
-  async function importSetList(file: File) {
-    try {
-      const data = await SetListService.load(file);
+  async function importSetList(file: File, remoteId?: string) {
+  try {
+    const data = await SetListService.load(file);
 
-      const id = `${data.banda}|${data.show}|${data.fecha}`;
-      const now = new Date().toISOString();
+    const id = `${data.banda}|${data.show}|${data.fecha}`;
+    const now = new Date().toISOString();
 
-      const existing = await db.setlists.get(id);
+    let existing: StoredSetList | undefined;
 
-      await db.setlists.put({
-        id,
-        banda: data.banda,
-        show: data.show,
-        fecha: data.fecha,
-        created_at: existing?.created_at ?? now,
-        last_opened: now,
-        data,
-      });
-
-      setSetList(data);
-      setCurrentIndex(0);
-
-      alert("Set list listo para visualizar");
-
-    } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Error al importar el archivo."
-      );
+    if (remoteId) {
+      // El SetList viene desde un QR
+      existing = await db.setlists
+        .where("remote_id")
+        .equals(remoteId)
+        .first();
+    } else {
+      // Importación manual desde archivo
+      existing = await db.setlists.get(id);
     }
+
+    await db.setlists.put({
+      id,
+      remote_id: remoteId ?? existing?.remote_id,
+      banda: data.banda,
+      show: data.show,
+      fecha: data.fecha,
+      created_at: existing?.created_at ?? now,
+      last_opened: now,
+      data,
+    });
+
+    setSetList(data);
+    setCurrentIndex(0);
+
+    alert("Set list listo para visualizar");
+
+  } catch (error) {
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Error al importar el archivo."
+    );
   }
+}
 
   /* importsetList DEBUGUIN
 async function importSetList(file: File) {
@@ -179,6 +191,41 @@ async function deleteStoredSetList(id: string) {
   setCurrentIndex(0);
 }
 
+async function updateSetList(remoteId: string) {
+  try {
+    const response = await fetch(
+      `/api/queSigue/viewer/${remoteId}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("No se pudo descargar el SetList.");
+    }
+
+    const json: SetListFile = await response.json();
+
+    const file = new File(
+      [JSON.stringify(json)],
+      "setlist.setlist",
+      {
+        type: "application/json",
+      }
+    );
+
+    await importSetList(file, remoteId);
+
+    return true;
+
+  } catch (error) {
+    console.error("Error actualizando SetList:", error);
+
+    return false;
+  }
+}
+
   return {
     setList,
 
@@ -213,5 +260,7 @@ async function deleteStoredSetList(id: string) {
     importDemo,
 
     clearCurrentSetList,
+
+    updateSetList, 
   };
 }

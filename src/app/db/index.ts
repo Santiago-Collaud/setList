@@ -3,6 +3,7 @@ import { SetListFile } from "../types/setlist";
 
 export interface StoredSetList {
   id: string;
+  remote_id?: string;
   banda: string;
   show: string;
   fecha: string;
@@ -17,8 +18,14 @@ class SetListDB extends Dexie {
   constructor() {
     super("SetListDB");
 
+    // Base original
     this.version(1).stores({
       setlists: "id, banda, show, fecha, last_opened",
+    });
+
+    // Migración
+    this.version(2).stores({
+      setlists: "id, banda, show, fecha, last_opened, remote_id",
     });
   }
 }

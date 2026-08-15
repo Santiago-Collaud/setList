@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { StoredSetList } from "../../app/db/index";
-import { Trash2 } from "lucide-react";
+import { Trash2, RefreshCw } from "lucide-react";
 
 interface MySetListsModalProps {
   open: boolean;
@@ -10,6 +10,7 @@ interface MySetListsModalProps {
   getStoredSetLists: () => Promise<StoredSetList[]>;
   openSetList: (setList: StoredSetList) => Promise<void> | void;
   deleteStoredSetList: (id: string) => Promise<void>;
+  updateSetList: (remoteId: string) => Promise<boolean>;
 }
 
 export default function MySetListsModal({
@@ -18,6 +19,7 @@ export default function MySetListsModal({
   getStoredSetLists,
   openSetList,
   deleteStoredSetList,
+  updateSetList,
 }: MySetListsModalProps) {
   const [setLists, setSetLists] = useState<StoredSetList[]>([]);
 
@@ -44,6 +46,25 @@ export default function MySetListsModal({
     await openSetList(setList);
     onClose();
   }
+
+  async function handleUpdateSetList(setList: StoredSetList) {
+  if (!setList.remote_id) {
+    alert("Este SetList no tiene un ID remoto asociado.");
+    return;
+  }
+
+  const success = await updateSetList(setList.remote_id);
+
+  if (success) {
+    alert("SetList actualizado correctamente.");
+  } else {
+    alert(
+      "No se pudo actualizar el SetList.\n" +
+      "Se mantiene la versión local."
+    );
+  }
+}
+
 
   if (!open) return null;
 
@@ -90,16 +111,25 @@ export default function MySetListsModal({
                     </p>
 
                   </div>
+                  <div>
+                    <button
+                      className="btn btn-ghost btn-circle"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(item.id);
+                      }}
+                    >
+                      <Trash2 size={18} />
+                    </button>
 
-                  <button
-                    className="btn btn-ghost btn-circle"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(item.id);
-                    }}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                    <button
+                      className="btn btn-ghost btn-circle"
+                      
+                    >
+                      <RefreshCw size={18} />
+                    </button>
+                  </div>
+                  
 
                 </div>
 
