@@ -60,6 +60,7 @@ export default function QRScanner({
 
       } catch (err) {
         console.error("Error iniciando la cámara:", err);
+        alert("No se pudo iniciar la cámara. Por favor, revisá los permisos.");
       }
     }
 
