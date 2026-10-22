@@ -194,12 +194,12 @@ async function deleteStoredSetList(id: string) {
 async function updateSetList(remoteId: string) {
   try {
     const response = await fetch(
-      `/api/queSigue/viewer/${remoteId}`,
+      `https://www.santiagocollaud.com.ar/api/queSigue/viewer/${remoteId}`,
       {
         method: "GET",
         cache: "no-store",
       }
-    );
+    ); 
 
     if (!response.ok) {
       throw new Error("No se pudo descargar el SetList.");
