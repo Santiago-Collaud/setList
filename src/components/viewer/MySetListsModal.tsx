@@ -124,9 +124,12 @@ export default function MySetListsModal({
 
                     <button
                       className="btn btn-ghost btn-circle"
-                      
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdateSetList(item);
+                      }}
                     >
-                      <RefreshCw size={18} />
+                      <RefreshCw size={18} />   
                     </button>
                   </div>
                   
