@@ -29,37 +29,43 @@ export function useSetList() {
   try {
     const data = await SetListService.load(file);
 
-    const id = `${data.banda}|${data.show}|${data.fecha}`;
-    const now = new Date().toISOString();
+      const id = `${data.banda}|${data.show}|${data.fecha}`;
+      const now = new Date().toISOString();
 
-    let existing: StoredSetList | undefined;
+      let existing: StoredSetList | undefined;
 
-    if (remoteId) {
-      // El SetList viene desde un QR
-      existing = await db.setlists
-        .where("remote_id")
-        .equals(remoteId)
-        .first();
-    } else {
-      // Importación manual desde archivo
-      existing = await db.setlists.get(id);
-    }
+      if (remoteId) {
+        existing = await db.setlists
+          .where("remote_id")
+          .equals(remoteId)
+          .first();
+      } else {
+        existing = await db.setlists.get(id);
+      }
 
-    await db.setlists.put({
-      id,
-      remote_id: remoteId ?? existing?.remote_id,
-      banda: data.banda,
-      show: data.show,
-      fecha: data.fecha,
-      created_at: existing?.created_at ?? now,
-      last_opened: now,
-      data,
-    });
+      await db.transaction("rw", db.setlists, async () => {
+        // Si el setlist ya existe con otra clave local, eliminar
+        // el registro anterior para evitar duplicados.
+        if (existing && existing.id !== id) {
+          await db.setlists.delete(existing.id);
+        }
 
-    setSetList(data);
-    setCurrentIndex(0);
+        await db.setlists.put({
+          id,
+          remote_id: remoteId ?? existing?.remote_id,
+          banda: data.banda,
+          show: data.show,
+          fecha: data.fecha,
+          created_at: existing?.created_at ?? now,
+          last_opened: now,
+          data,
+        });
+      });
 
-    alert("Set list listo para visualizar");
+      setSetList(data);
+      setCurrentIndex(0);
+
+      alert("Set list listo para visualizar");
 
   } catch (error) {
     alert(
@@ -220,10 +226,14 @@ async function updateSetList(remoteId: string) {
     return true;
 
   } catch (error) {
-    console.error("Error actualizando SetList:", error);
+  alert(
+    error instanceof Error
+      ? error.message
+      : "Error al importar el archivo."
+  );
 
-    return false;
-  }
+  throw error;
+}
 }
 
   return {
