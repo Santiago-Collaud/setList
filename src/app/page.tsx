@@ -192,6 +192,7 @@ async function handleQRScan(url: string) {
     const json: SetListFile = await response.json();
 
     // Si ya existe localmente, comparar versiones
+    /*
     if (existing) {
       if (json.version <= existing.data.version) {
         await db.setlists.update(existing.id, {
@@ -204,7 +205,7 @@ async function handleQRScan(url: string) {
 
         return;
       }
-    }
+    }*/
 
     // Si no existe o la versión remota es más nueva,
     // importamos y guardamos el SetList.
